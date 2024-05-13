@@ -1,0 +1,16 @@
+user-admin:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+  h2:
+    console:
+      enabled: false
+      path: /h2
+      settings:
+        web-allow-others: true
+  springdoc:
+    swagger-ui:
+      enabled: true
+  openapi-servers-urls: http://127.0.0.1:${server.port}${server.servlet.context-path}, http://localhost:${server.port}${server.servlet.context-path}

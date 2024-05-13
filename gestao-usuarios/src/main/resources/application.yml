@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  profiles:
+    active: ${user-admin.spring.profiles.active:local}
+  application:
+    name: user-admin
+  datasource:
+    url: ${user-admin.datasource.url}
+    driver-class-name: ${user-admin.datasource.driver-class-name}
+    password: ${user-admin.datasource.password}
+    username: ${user-admin.datasource.username}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: ${user-admin.h2.console.enabled}
+      path: ${user-admin.h2.console.path}
+      settings:
+        web-allow-others: ${user-admin.h2.console.settings.web-allow-others}
+springdoc:
+  swagger-ui:
+    enabled: ${user-admin.springdoc.swagger-ui.enabled}
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+  paths-to-exclude: /profile/**
+
+openapi-servers-urls: ${user-admin.openapi-servers-urls}
