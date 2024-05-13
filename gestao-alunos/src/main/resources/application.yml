@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: gestao-alunos
+  profiles:
+    active: ${gestao-alunos.spring.profiles.active:dev}
+  datasource:
+    url: ${gestao-alunos.datasource.url}
+    driver-class-name: ${gestao-alunos.datasource.driver-class-name}
+    password: ${gestao-alunos.datasource.password}
+    username: ${gestao-alunos.datasource.username}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    show-sql: true

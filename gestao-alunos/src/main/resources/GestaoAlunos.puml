@@ -1,0 +1,115 @@
+@startuml
+
+' Entidades
+class Aluno {
+    + Long id
+    + String nome
+    + String email
+    + Date dataNascimento
+}
+
+class Curso {
+    + Long id
+    + String nome
+    + String descricao
+}
+
+class Matricula {
+    + Long id
+    + Long aluno_id
+    + Long curso_id
+    + Date dataMatricula
+}
+
+class Professor {
+    + Long id
+    + String nome
+    + String departamento
+}
+
+class Turma {
+    + Long id
+    + Long curso_id
+    + Long professor_id
+    + String semestre
+    + String horario
+}
+
+' Repositórios
+class AlunoRepository {
+    + findByName(String name): List<Aluno>
+}
+
+class CursoRepository {
+    + findAll(): List<Curso>
+}
+
+class MatriculaRepository {
+    + findByCursoId(Long id): List<Matricula>
+}
+
+class ProfessorRepository {
+    + findAll(): List<Professor>
+}
+
+class TurmaRepository {
+    + findByCursoId(Long id): List<Turma>
+}
+
+' Serviços
+class AlunoService {
+    + adicionarAluno(Aluno aluno): void
+    + removerAluno(Long id): void
+    + atualizarAluno(Aluno aluno): void
+    + buscarAlunoPorNome(String nome): List<Aluno>
+}
+
+class CursoService {
+    + criarCurso(Curso curso): void
+    + removerCurso(Long id): void
+    + atualizarCurso(Curso curso): void
+    + listarCursos(): List<Curso>
+}
+
+class MatriculaService {
+    + matricularAluno(Long alunoId, Long cursoId): void
+    + cancelarMatricula(Long id): void
+    + listarMatriculasPorCurso(Long cursoId): List<Matricula>
+    + listarMatriculasPorAluno(Long alunoId): List<Matricula>
+}
+
+class ProfessorService {
+    + adicionarProfessor(Professor professor): void
+    + removerProfessor(Long id): void
+    + atualizarProfessor(Professor professor): void
+    + listarProfessores(): List<Professor>
+}
+
+class TurmaService {
+    + criarTurma(Turma turma): void
+    + removerTurma(Long id): void
+    + atualizarTurma(Turma turma): void
+    + listarTurmasPorCurso(Long cursoId): List<Turma>
+}
+
+' Relacionamentos
+Aluno "1" -- "*" Matricula
+Curso "1" -- "*" Matricula
+Curso "1" -- "*" Turma
+Professor "1" -- "*" Turma
+
+' Camada de Repositório -> Entidades
+AlunoRepository ..> Aluno
+CursoRepository ..> Curso
+MatriculaRepository ..> Matricula
+ProfessorRepository ..> Professor
+TurmaRepository ..> Turma
+
+' Camada de Serviço -> Repositório
+AlunoService ..> AlunoRepository
+CursoService ..> CursoRepository
+MatriculaService ..> MatriculaRepository
+ProfessorService ..> ProfessorRepository
+TurmaService ..> TurmaRepository
+
+@enduml
