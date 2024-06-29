@@ -1,0 +1,48 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Cliente {
+  - id: Long
+  - nome: String
+  - telefone: String
+  - endereco: String
+  - codigoDeEntrega: String
+  + adicionarPedido(pedido: Pedido): void
+  + getPedidos(): List<Pedido>
+}
+
+class Pedido {
+  - id: Long
+  - data: LocalDate
+  - hora: LocalTime
+  - quantidadeItens: int
+  - valorTotal: BigDecimal
+  - cliente: Cliente
+  - entrega: Entrega
+  + calcularTotal(): BigDecimal
+  + verificarStatusEntrega(): String
+}
+
+class ItemPedido {
+  - id: Long
+  - descricao: String
+  - precoUnitario: BigDecimal
+  - quantidade: int
+}
+
+class Entrega {
+  - id: Long
+  - dataEntrega: LocalDate
+  - horaEntrega: LocalTime
+  - tipoPagamento: String
+  - codigoDeEntrega: String
+  + confirmarRecebimento(): void
+  + verificarPagamento(): boolean
+}
+
+
+Cliente "1" *-- "*" Pedido : possui
+Pedido "1" *-- "*" ItemPedido : contém
+Entrega "1" *-- "1" Pedido : associa
+
+@enduml
