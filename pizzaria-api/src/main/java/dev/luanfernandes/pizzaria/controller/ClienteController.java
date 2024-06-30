@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 import static dev.luanfernandes.pizzaria.constants.PathConstants.CLIENTE_ID;
 import static dev.luanfernandes.pizzaria.constants.PathConstants.CLIENTE_V1;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -70,6 +72,29 @@ public interface ClienteController {
             })
     @GetMapping(CLIENTE_ID)
     ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long clienteId);
+
+    @Operation(
+            summary = "Buscar todos os clientes",
+            tags = {"cliente"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Not Found",
+                            content =
+                            @Content(
+                                    mediaType = APPLICATION_PROBLEM_JSON_VALUE,
+                                    schema = @Schema(implementation = ProblemDetail.class))),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Internal Server Error",
+                            content =
+                            @Content(
+                                    mediaType = APPLICATION_PROBLEM_JSON_VALUE,
+                                    schema = @Schema(implementation = ProblemDetail.class)))
+            })
+    @GetMapping(CLIENTE_V1)
+    ResponseEntity<List<ClienteResponse>> buscarTodosClientes();
 
     @Operation(
             summary = "Atualizar um cliente existente",

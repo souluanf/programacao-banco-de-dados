@@ -2,20 +2,23 @@ package dev.luanfernandes.pizzaria.service.impl;
 
 import dev.luanfernandes.pizzaria.domain.entity.Cliente;
 import dev.luanfernandes.pizzaria.domain.entity.Pedido;
+import dev.luanfernandes.pizzaria.domain.mapper.ClienteMapper;
+import dev.luanfernandes.pizzaria.domain.request.ClienteRequest;
+import dev.luanfernandes.pizzaria.domain.response.ClienteResponse;
 import dev.luanfernandes.pizzaria.repository.ClienteRepository;
-import dev.luanfernandes.pizzaria.repository.PedidoRepository;
 import dev.luanfernandes.pizzaria.service.ClienteService;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final PedidoRepository pedidoRepository;
+    private final ClienteMapper clienteMapper;
 
     @Override
     public void adicionarPedido(Long clienteId, Pedido pedido) {
@@ -24,7 +27,6 @@ public class ClienteServiceImpl implements ClienteService {
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
         pedido.setCliente(cliente);
         cliente.getPedidos().add(pedido);
-        pedidoRepository.save(pedido);
         clienteRepository.save(cliente);
     }
 
@@ -55,16 +57,32 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Void deletarCliente(Long clienteId) {
+    public void deletarCliente(Long clienteId) {
         Cliente cliente = clienteRepository
                 .findById(clienteId)
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado"));
         clienteRepository.delete(cliente);
-        return null;
     }
 
     @Override
-    public Cliente criarCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public ClienteResponse criarCliente(ClienteRequest clienteRequest) {
+//        Cliente cliente = clienteMapper.map(clienteRequest);
+//        Cliente saved = clienteRepository.save(cliente);
+//        return clienteMapper.map(saved);
+        return clienteMapper.map(clienteRepository.save(clienteMapper.map(clienteRequest)));
+    }
+
+    @Override
+    public List<ClienteResponse> buscarTodosClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+
+//        List<ClienteResponse> clientesResponse = new ArrayList<>();
+//        for (Cliente cliente : clientes) {
+//            ClienteResponse clienteResponse = clienteMapper.map(cliente);
+//            clientesResponse.add(clienteResponse);
+//        }
+//        return clientesResponse;
+
+        return clientes.stream().map(clienteMapper::map).toList();
     }
 }

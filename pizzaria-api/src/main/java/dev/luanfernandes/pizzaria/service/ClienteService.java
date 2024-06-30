@@ -2,6 +2,9 @@ package dev.luanfernandes.pizzaria.service;
 
 import dev.luanfernandes.pizzaria.domain.entity.Cliente;
 import dev.luanfernandes.pizzaria.domain.entity.Pedido;
+import dev.luanfernandes.pizzaria.domain.request.ClienteRequest;
+import dev.luanfernandes.pizzaria.domain.response.ClienteResponse;
+
 import java.util.List;
 
 public interface ClienteService {
@@ -13,7 +16,9 @@ public interface ClienteService {
 
     Cliente atualizarCliente(Long clienteId, Cliente clienteAtualizado);
 
-    Void deletarCliente(Long clienteId);
+    void deletarCliente(Long clienteId);
 
-    Cliente criarCliente(Cliente cliente);
+    ClienteResponse criarCliente(ClienteRequest cliente);
+
+    List<ClienteResponse> buscarTodosClientes();
 }
